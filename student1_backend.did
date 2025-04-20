@@ -1,0 +1,25 @@
+type AttendanceRecord = record { status : bool; date : text };
+type Result = variant { Ok; Err : text };
+type Result_1 = variant { Ok : vec AttendanceRecord; Err : text };
+type Result_2 = variant { Ok : record { nat32; nat32; float64 }; Err : text };
+type Result_3 = variant { Ok : Student; Err : text };
+type Student = record {
+  id : nat64;
+  class : text;
+  name : text;
+  present_days : nat32;
+  absent_days : nat32;
+};
+service : {
+  add_student : (nat64, text, text) -> (Result);
+  get_all_students : () -> (vec Student) query;
+  get_attendance : (nat64) -> (Result_1) query;
+  get_attendance_stats : (nat64) -> (Result_2) query;
+  get_class_attendance : (text) -> (
+      vec record { Student; vec AttendanceRecord },
+    ) query;
+  get_student : (nat64) -> (Result_3) query;
+  remove_student : (nat64) -> (Result);
+  update_student : (nat64, opt text, opt text) -> (Result);
+}
+
